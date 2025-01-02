@@ -5,9 +5,15 @@ const admin = require("firebase-admin");
 
 const FCM_CLIENT_API_KEY = "AIzaSyAorpsSiAfmNXTkKwdmkuBNImSBZndfdDg";
 const VUE_APP_FCM_SEND_URL_V2 =
-  "https://fcm.googleapis.com/v1/projects/yttodoapp-1dacb/messages:send";
+  "https://fcm.googleapis.com/v1/projects/fluttertodoapp-f8b26/messages:send";
 
-admin.initializeApp();
+// admin.initializeApp();
+var serviceAccount = require("./fluttertodoapp-f8b26-firebase-adminsdk-qbqj6-3a77482ccb.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  projectId: "fluttertodoapp-f8b26",
+});
 
 // Initialize Express app
 const app = express();
@@ -58,5 +64,13 @@ app.get("/generate_fcm_token", async (req, res) => {
   }
 });
 
+const PORT = 4000;
+
 // Export the Express app as a Firebase Cloud Function
-exports.api = functions.https.onRequest(app);
+// exports.api = functions.https.onRequest(app);
+
+app.listen(PORT, () => {
+  console.log("App listenting on localhost:3000");
+});
+
+module.exports = app;
